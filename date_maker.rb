@@ -22,6 +22,7 @@ class DateCreator
 		:date_lbl_bg
 		:date_lbl_pos
 		:base
+		:dateCache
 
 	def initialize
 		@lbl_size = 350
@@ -34,9 +35,11 @@ class DateCreator
 		@date_lbl_bg = nil
 		@date_lbl_pos = nil
 		@base = nil
+		@dateCache = []
 	end
 
-	def createDateLabel(date)
+	def createDate(date)
+		return @dateCache[date] unless @dateCache[date] == nil
 		createBaseImage if @base == nil
 		createDateLabelBg if @date_lbl_bg == nil
 		createDateLabelPos if @date_lbl_pos == nil
@@ -54,6 +57,7 @@ class DateCreator
 		ilist.push(@base)
 		ilist.push(temp)
 		date_img=ilist.flatten_images
+		@dateCache[date] = date_img
 
 		#date_img.write("date#{date}.png") We don't need to save this image 
 	end

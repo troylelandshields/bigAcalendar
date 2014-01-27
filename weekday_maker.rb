@@ -18,7 +18,7 @@ class WeekDayCreator
 		:base #The template base
 
 	def initialize
-		@weekLabels = ["S", "M", "T", "W", "T", "F", "S"];
+		@weekLabels = ["S", "M", "T", "W", "T", "F", "S"]
 		@weekLblColors = ["maroon", "black", "black", "black", "black", "black", "maroon"]
 		@lblWidth = 2040 #Date width
 		@lblHeight = 1800

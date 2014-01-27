@@ -1,12 +1,11 @@
 require 'RMagick'
-require 'matrix'
 require '/Users/troyshields/Documents/Ruby/calendar/date_maker.rb'
 require '/Users/troyshields/Documents/Ruby/calendar/weekday_maker.rb'
 include Magick
 
 def test!
 	monthMaker = MonthMaker.new
-	monthMaker.addAllDates(1, 1)
+	monthMaker.createMonth(3, 31, "JANUARY", 2014)
 end
 
 #First one starts at 106,2440
@@ -22,6 +21,8 @@ class MonthMaker
 		:weekNums
 		:dateCreator
 		:bg_color
+		:monthDays
+		:monthNames
 		:monthDays
 
 	def initialize
@@ -48,10 +49,30 @@ class MonthMaker
 		@weekDays = [sundayX, mondayX, tuesdayX, wednesdayX, thursdayX, fridayX, saturdayX]
 		@weekNums = [week1Y, week2Y, week3Y, week4Y, week5Y]
 
-		@monthDays = 30
-
 		@dateCreator = DateCreator.new
 
+	end
+
+	def createMonth(startDay, numDays, month, year)
+		addAllDates(startDay, numDays, month)
+
+		addDateBorders
+	 	addDayLabels
+
+	 	final = @dateImgList.flatten_images
+	 	addMonthLabel(final, month, "2014")
+	 	final.write("#{month}.png")
+	end
+
+	def addMonthLabel(img, month, year)
+		psize = 600
+		monthLbl = Draw.new
+		monthLbl.gravity = NorthEastGravity
+		monthLbl.pointsize = psize
+		monthLbl.fill = 'black'
+		monthLbl.font_weight = BoldWeight
+
+		monthLbl.annotate(img, 0, 0, @dateWidth/3, psize/4, "#{month} #{year}")
 	end
 
 	def addDayLabels
@@ -64,30 +85,24 @@ class MonthMaker
 		end
 	end
 
-	def addAllDates(startDay, date)
+	def addAllDates(startDay, numDays, month)
 	 	@dateImgList = ImageList.new
 	 	@dateImgList.push(createBaseImage)
 
-	 	currentDate = date
+	 	currentDate = 1
 	 	currentWeekDay = startDay
 	 	currentWeekNum = 0
 
-	 	until currentDate > @monthDays
+	 	until currentDate > numDays
 	 		addDate(currentWeekDay, currentWeekNum, currentDate)
 	 		currentWeekNum = incrementWeekNum(currentWeekDay, currentWeekNum)
 	 		currentWeekDay = incrementWeekDay(currentWeekDay)
 	 		currentDate = currentDate + 1
 	 	end
-
-	 	addDateBorders
-	 	addDayLabels
-
-	 	@final = @dateImgList.flatten_images
-	 	@final.write("final.png")
 	end
 
 	def addDate(weekDay, weekNum, date)
-		dateImg = @dateCreator.createDateLabel(date)
+		dateImg = @dateCreator.createDate(date)
 		dateImg.page = createDatePos(weekDay, weekNum)
 
 		@dateImgList.push(dateImg)
