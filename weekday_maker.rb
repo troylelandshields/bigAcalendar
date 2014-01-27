@@ -9,20 +9,20 @@ end
 
 class WeekDayCreator
 
-	attr_accessor
-		:weekLabels
-		:lblWidth
-		:lblHeight
-		:dayColor
-		:bgColor
+	attr_accessor(
+		:weekLabels,
+		:lblWidth,
+		:lblHeight,
+		:dayColor,
+		:bgColor,
 		:base #The template base
+	)
 
 	def initialize
 		@weekLabels = ["S", "M", "T", "W", "T", "F", "S"]
 		@weekLblColors = ["maroon", "black", "black", "black", "black", "black", "maroon"]
 		@lblWidth = 2040 #Date width
-		@lblHeight = 1800
-		@dayPos = 80
+		@lblHeight = 1800 #Height from top
 		@bgColor = 'white'
 		@base = nil
 	end

@@ -4,35 +4,46 @@ require '/Users/troyshields/Documents/Ruby/calendar/weekday_maker.rb'
 include Magick
 
 def test!
-	monthMaker = MonthMaker.new
-	monthMaker.createMonth(3, 31, "JANUARY", 2014)
+	monthMaker = MonthMaker.new #NEED TO CHANGE ALL VARIABLES AS FUNCTION OF WIDTH
+	monthMaker.createMonth(6, 28, "FEBRUARY", 2014)
 end
 
 #First one starts at 106,2440
 
 class MonthMaker
 
-	attr_accessor
-		:dateImgList
-		:dateDivider
-		:dateWidth
-		:dateHeight
-		:weekDays
-		:weekNums
-		:dateCreator
-		:bg_color
-		:monthDays
-		:monthNames
-		:monthDays
+	attr_accessor(
+		:dateImgList,
+		:dateDivider,
+		:dateWidth,
+		:dateHeight,
+		:weekDays,
+		:weekNums,
+		:dateCreator,
+		:bg_color,
+		:monthDays,
+		:monthNames,
+		:monthDays,
+		:totalWidth,
+		:totalHeight,
+		:addHorizontalRule,
+		:addVerticalRule
+	)
+
 
 	def initialize
 		@dateList = nil
-		@dateDivider = 60
-		@dateWidth = 2040
-		@dateHeight = 1443
+
+		@totalWidth = 1500 #14850 IS DEFAULT
+		@totalHeight = @totalWidth * 0.72727272727273
+
+		@dateDivider = @totalWidth * 0.0040404040404
+		@dateWidth = @totalWidth * 0.13737374
+		@dateHeight = @totalHeight * 0.13361111
+
 		@bg_color = 'white'
 
-		sundayX = 106
+		sundayX = @totalWidth * 0.00713804713805
 		mondayX = sundayX + @dateWidth + @dateDivider #calculates to 2206 with the default values
 		tuesdayX = mondayX + @dateWidth + @dateDivider
 		wednesdayX = tuesdayX + @dateWidth + @dateDivider
@@ -40,7 +51,7 @@ class MonthMaker
 		fridayX = thursdayX + @dateWidth + @dateDivider
 		saturdayX = fridayX + @dateWidth + @dateDivider
 
-		week1Y = 2440
+		week1Y = @totalHeight * 0.22592592592593
 		week2Y = week1Y + @dateHeight + @dateDivider
 		week3Y = week2Y + @dateHeight + @dateDivider
 		week4Y = week3Y + @dateHeight + @dateDivider
@@ -49,8 +60,10 @@ class MonthMaker
 		@weekDays = [sundayX, mondayX, tuesdayX, wednesdayX, thursdayX, fridayX, saturdayX]
 		@weekNums = [week1Y, week2Y, week3Y, week4Y, week5Y]
 
-		@dateCreator = DateCreator.new
+		@addHorizontalRule = true
+		@addVerticalRule = false
 
+		@dateImgList = ImageList.new
 	end
 
 	def createMonth(startDay, numDays, month, year)
@@ -65,7 +78,7 @@ class MonthMaker
 	end
 
 	def addMonthLabel(img, month, year)
-		psize = 600
+		psize = @totalHeight * 0.05555555555556
 		monthLbl = Draw.new
 		monthLbl.gravity = NorthEastGravity
 		monthLbl.pointsize = psize
@@ -77,6 +90,9 @@ class MonthMaker
 
 	def addDayLabels
 		weekDayMaker = WeekDayCreator.new
+		weekDayMaker.lblWidth = @dateWidth
+		weekDayMaker.lblHeight = @dateImgList[0].rows * 0.16666666
+
 		for i in(0..6)
 			weekDayLbl = weekDayMaker.createDayLabel(i)
 			weekDayLbl.page = Rectangle.new(weekDayLbl.columns, weekDayLbl.rows,
@@ -86,7 +102,11 @@ class MonthMaker
 	end
 
 	def addAllDates(startDay, numDays, month)
-	 	@dateImgList = ImageList.new
+		@dateCreator = DateCreator.new
+
+		@dateCreator.date_width = @dateWidth
+		@dateCreator.date_height = @dateHeight
+
 	 	@dateImgList.push(createBaseImage)
 
 	 	currentDate = 1
@@ -109,11 +129,11 @@ class MonthMaker
 	end
 
 	def addDateBorders
-		horizontalRule = Image.new(@dateImgList[0].columns - 150, @dateDivider){self.background_color='black'} #TODO: Make this more dynamic
+		horizontalRule = Image.new(@dateImgList[0].columns - (@totalWidth * 0.01010101010101), @dateDivider){self.background_color='black'} #TODO: Make this more dynamic
 		verticalRule = Image.new(@dateDivider, (@dateHeight*5) + (@dateDivider*6)){self.background_color='black'}
 
-		addHorizontalRules(horizontalRule)
-		addVerticalRules(verticalRule)
+		addHorizontalRules(horizontalRule) unless addHorizontalRule == false
+		addVerticalRules(verticalRule) unless addVerticalRule == false
 	end
 
 	def addHorizontalRules(horizontalRule)
@@ -158,7 +178,7 @@ class MonthMaker
 
 	def createBaseImage
 		bg_color = @bg_color
-		return Image.new(14850, 10800){self.background_color = bg_color}
+		return Image.new(@totalWidth, @totalHeight){self.background_color = bg_color}
 	end
 
 	def createDatePos(weekDay, weekNum)

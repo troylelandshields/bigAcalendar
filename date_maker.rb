@@ -11,29 +11,30 @@ end
 
 class DateCreator
 
-	attr_accessor
-		:lbl_size
-		:date_position
-		:date_color
-		:bg_color
-		:date_lbl_bg_color
-		:date_width
-		:date_height
-		:date_lbl_bg
-		:date_lbl_pos
-		:base
+	attr_accessor(
+		:lbl_size,
+		:date_position,
+		:date_color,
+		:bg_color,
+		:date_lbl_bg_color,
+		:date_width,
+		:date_height,
+		:date_lbl_bg,
+		:date_lbl_pos,
+		:base,
 		:dateCache
+	)
 
 	def initialize
-		@lbl_size = 350
-		@date_position = 80
-		@date_color = 'white'
+		@date_width = 2040				#Width of date box; Default = 2040
+		@date_height = 1443				#Default = 1443
+		@lbl_size = 200					#Size of date Default = 350
+		@date_position = -50				#Position of date from upper-left corner Default = 80
+		@date_color = 'white'	
 		@bg_color = 'white'
-		@date_lbl_bg_color = 'black'
-		@date_width = 2040
-		@date_height = 1443
-		@date_lbl_bg = nil
-		@date_lbl_pos = nil
+		@date_lbl_bg_color = 'black'	#Height of date box
+		@date_lbl_bg = nil				#BG image for the date label
+		@date_lbl_pos = nil				#A rectangle to place the date
 		@base = nil
 		@dateCache = []
 	end

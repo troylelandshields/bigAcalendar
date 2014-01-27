@@ -11,8 +11,9 @@ end
 
 class YearCreator
 
-	attr_accessor
+	attr_accessor(
 		:months
+	)
 
 	def initialize
 		@monthDays = {
