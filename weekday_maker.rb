@@ -27,6 +27,11 @@ class WeekDayCreator
 		@base = nil
 	end
 
+	def setSize(width)
+		@lblWidth = width
+		@lblHeight = @lblWidth * 0.88235294117647
+	end
+
 	def createDayLabel(day)
 		createBaseImage if @base == nil
 		temp = @base.copy

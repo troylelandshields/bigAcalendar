@@ -14,6 +14,8 @@ class DateCreator
 	attr_accessor(
 		:lbl_size,
 		:date_position,
+		:black_stroke,
+		:white_stroke,
 		:date_color,
 		:bg_color,
 		:date_lbl_bg_color,
@@ -39,6 +41,15 @@ class DateCreator
 		@dateCache = []
 	end
 
+	def setSize(width)
+		@date_width = width
+		@date_height = @date_width * 0.70735294117647
+		@lbl_size = @date_height * 0.24255024255024
+		@date_position = @date_width * 0.03921568627451
+		@black_stroke = @date_width * 0.01078431372549
+		@white_stroke = @date_width * 0.00588235294118
+	end
+
 	def createDate(date)
 		return @dateCache[date] unless @dateCache[date] == nil
 		createBaseImage if @base == nil
@@ -48,7 +59,7 @@ class DateCreator
 
 		date_lbl = Draw.new
 		date_lbl.gravity = CenterGravity
-		date_lbl.pointsize = @lbl_size - 90
+		date_lbl.pointsize = @lbl_size - (@date_height * 0.06237006237006)
 		date_lbl.fill = @date_color.to_s
 		date_lbl.annotate(temp, 0, 0, 0, 0, date.to_s)
 
@@ -64,18 +75,18 @@ class DateCreator
 	end
 
 	def createDateLabelBg 
-		@date_lbl_bg = Image.new(@lbl_size+10, @lbl_size+10){self.background_color = 'transparent'}
+		@date_lbl_bg = Image.new(@lbl_size, @lbl_size){self.background_color = 'transparent'}
 
 		cir = Draw.new #This is the bigger, all-black circle.
 		cir.fill = @date_lbl_bg_color.to_s
-		cir.circle(@date_lbl_bg.rows/2, @date_lbl_bg.columns/2, 2, @date_lbl_bg.columns/2)
+		cir.circle(@date_lbl_bg.rows/2, @date_lbl_bg.columns/2, 1, @date_lbl_bg.columns/2)
 		cir.draw(@date_lbl_bg)
 
 		cir = Draw.new
 		cir.fill=@date_lbl_bg_color.to_s
 		cir.stroke(@date_color.to_s)
-		cir.stroke_width(12) #This is the width of the white stroke on the inner black circle.
-		cir.circle(@date_lbl_bg.rows/2, @date_lbl_bg.columns/2, 24, @date_lbl_bg.columns/2) #The size of this smaller circle determines the stroke of black that surrounds the white
+		cir.stroke_width(@white_stroke) #This is the width of the white stroke on the inner black circle.
+		cir.circle(@date_lbl_bg.rows/2, @date_lbl_bg.columns/2, @black_stroke, @date_lbl_bg.columns/2) #The size of this smaller circle determines the stroke of black that surrounds the white
 		cir.draw(@date_lbl_bg)
 	end
 

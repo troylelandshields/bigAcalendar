@@ -13,7 +13,7 @@ end
 class MonthMaker
 
 	attr_accessor(
-		:dateImgList,
+		:imgList,
 		:dateDivider,
 		:dateWidth,
 		:dateHeight,
@@ -63,7 +63,7 @@ class MonthMaker
 		@addHorizontalRule = true
 		@addVerticalRule = false
 
-		@dateImgList = ImageList.new
+		@imgList = ImageList.new
 	end
 
 	def createMonth(startDay, numDays, month, year)
@@ -72,7 +72,7 @@ class MonthMaker
 		addDateBorders
 	 	addDayLabels
 
-	 	final = @dateImgList.flatten_images
+	 	final = @imgList.flatten_images
 	 	addMonthLabel(final, month, "2014")
 	 	final.write("#{month}.png")
 	end
@@ -90,24 +90,22 @@ class MonthMaker
 
 	def addDayLabels
 		weekDayMaker = WeekDayCreator.new
-		weekDayMaker.lblWidth = @dateWidth
-		weekDayMaker.lblHeight = @dateImgList[0].rows * 0.16666666
+		weekDayMaker.setSize(@dateWidth)
+		#weekDayMaker.lblHeight = @imgList[0].rows * 0.16666666
 
 		for i in(0..6)
 			weekDayLbl = weekDayMaker.createDayLabel(i)
 			weekDayLbl.page = Rectangle.new(weekDayLbl.columns, weekDayLbl.rows,
 							@weekDays[i], (@weekNums[0] - (weekDayLbl.rows + @dateDivider)))
-			@dateImgList.push(weekDayLbl)
+			@imgList.push(weekDayLbl)
 		end
 	end
 
 	def addAllDates(startDay, numDays, month)
 		@dateCreator = DateCreator.new
+		@dateCreator.setSize(@dateWidth)
 
-		@dateCreator.date_width = @dateWidth
-		@dateCreator.date_height = @dateHeight
-
-	 	@dateImgList.push(createBaseImage)
+	 	@imgList.push(createBaseImage)
 
 	 	currentDate = 1
 	 	currentWeekDay = startDay
@@ -125,11 +123,11 @@ class MonthMaker
 		dateImg = @dateCreator.createDate(date)
 		dateImg.page = createDatePos(weekDay, weekNum)
 
-		@dateImgList.push(dateImg)
+		@imgList.push(dateImg)
 	end
 
 	def addDateBorders
-		horizontalRule = Image.new(@dateImgList[0].columns - (@totalWidth * 0.01010101010101), @dateDivider){self.background_color='black'} #TODO: Make this more dynamic
+		horizontalRule = Image.new(@imgList[0].columns - (@totalWidth * 0.01010101010101), @dateDivider){self.background_color='black'} #TODO: Make this more dynamic
 		verticalRule = Image.new(@dateDivider, (@dateHeight*5) + (@dateDivider*6)){self.background_color='black'}
 
 		addHorizontalRules(horizontalRule) unless addHorizontalRule == false
@@ -141,9 +139,9 @@ class MonthMaker
 
 		for i in 0..5
 			div = horizontalRule.clone
-			div.page = Rectangle.new(div.rows, div.columns, (@dateImgList[0].columns - div.columns)/2, currentY)
+			div.page = Rectangle.new(div.rows, div.columns, (@imgList[0].columns - div.columns)/2, currentY)
 
-			@dateImgList.push(div)
+			@imgList.push(div)
 			currentY = currentY + @dateHeight + @dateDivider
 		end
 	end
@@ -155,7 +153,7 @@ class MonthMaker
 			div = verticalRule.clone
 			div.page = Rectangle.new(div.rows, div.columns, currentX, @weekNums[0] - @dateDivider)
 
-			@dateImgList.push(div)
+			@imgList.push(div)
 			currentX = currentX + @dateWidth + @dateDivider
 		end
 	end
