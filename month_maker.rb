@@ -1,6 +1,6 @@
 require 'RMagick'
-require '/Users/troyshields/Documents/Ruby/calendar/date_maker.rb'
-require '/Users/troyshields/Documents/Ruby/calendar/weekday_maker.rb'
+require_relative 'date_maker.rb'
+require_relative 'weekday_maker.rb'
 include Magick
 
 def test!

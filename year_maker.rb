@@ -1,5 +1,5 @@
 require 'RMagick'
-require '/Users/troyshields/Documents/Ruby/calendar/month_maker.rb'
+require_relative 'month_maker.rb'
 include Magick
 
 
