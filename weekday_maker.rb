@@ -15,6 +15,7 @@ class WeekDayCreator
 		:lblHeight,
 		:dayColor,
 		:bgColor,
+		:font,
 		:base #The template base
 	)
 
@@ -24,6 +25,7 @@ class WeekDayCreator
 		@lblWidth = 2040 #Date width
 		@lblHeight = 1800 #Height from top
 		@bgColor = 'white'
+		@font = 'font/SourceSansPro-Bold.otf'
 		@base = nil
 	end
 
@@ -37,9 +39,10 @@ class WeekDayCreator
 		temp = @base.copy
 
 		dayLbl = Draw.new
-		dayLbl.gravity = NorthGravity #Maybe change this
+		dayLbl.gravity = CenterGravity #Maybe change this
 		dayLbl.pointsize = @lblHeight + (@lblHeight * (1.0/7.0))
 		dayLbl.fill = @weekLblColors[day]
+		dayLbl.font = @font
 		dayLbl.font_weight = BoldWeight
 		dayLbl.annotate(temp, 0, 0, 0, 0, @weekLabels[day])
 

@@ -24,6 +24,7 @@ class DateCreator
 		:date_lbl_bg,
 		:date_lbl_pos,
 		:base,
+		:font,
 		:dateCache
 	)
 
@@ -38,13 +39,14 @@ class DateCreator
 		@date_lbl_bg = nil				#BG image for the date label
 		@date_lbl_pos = nil				#A rectangle to place the date
 		@base = nil
+		@font = 'font/SourceSansPro-Bold.otf'
 		@dateCache = []
 	end
 
 	def setSize(width)
 		@date_width = width
 		@date_height = @date_width * 0.70735294117647
-		@lbl_size = @date_height * 0.24255024255024
+		@lbl_size = @date_height * 0.2772002772
 		@date_position = @date_width * 0.03921568627451
 		@black_stroke = @date_width * 0.01078431372549
 		@white_stroke = @date_width * 0.00588235294118
@@ -59,9 +61,11 @@ class DateCreator
 
 		date_lbl = Draw.new
 		date_lbl.gravity = CenterGravity
-		date_lbl.pointsize = @lbl_size - (@date_height * 0.06237006237006)
+		date_lbl.font = @font
+		date_lbl.pointsize = @lbl_size - (@date_height * 0.09009009009)
+		date_lbl.kerning = -3 #Make this scale
 		date_lbl.fill = @date_color.to_s
-		date_lbl.annotate(temp, 0, 0, 0, 0, date.to_s)
+		date_lbl.annotate(temp, 0, 0, 1, 0, date.to_s)
 
 		temp.page = @date_lbl_pos
 
@@ -72,6 +76,39 @@ class DateCreator
 		@dateCache[date] = date_img
 
 		#date_img.write("date#{date}.png") We don't need to save this image 
+	end
+
+	def createDoubleDate(date, date2, divider)
+		createBaseImage if @base == nil
+		createDateLabelBg if @date_lbl_bg == nil
+		createDateLabelPos if @date_lbl_pos == nil
+		temp = @date_lbl_bg.copy
+		temp2 = @date_lbl_bg.copy
+
+		date_lbl = Draw.new
+		date_lbl.gravity = CenterGravity
+		date_lbl.font = @font
+		date_lbl.pointsize = @lbl_size - (@date_height * 0.09009009009)
+		date_lbl.kerning = -3
+		date_lbl.fill = @date_color.to_s
+		date_lbl.annotate(temp, 0, 0, 0, 0, date.to_s)
+		date_lbl.annotate(temp2, 0, 0, 0, 0, date2.to_s)
+
+		x = 11
+		l = Draw.new
+		l.stroke('black')
+		l.stroke_width(divider)
+		l.line(@base.columns/x, @base.rows/x, (@base.columns*(x-1)/x), (@base.rows*(x-1))/x)
+		l.draw(@base)
+
+		temp.page = @date_lbl_pos
+		temp2.page = Rectangle.new(@date_lbl_bg.rows, @date_lbl_bg.columns, @date_position, @base.rows - (@date_position+@date_lbl_bg.rows))
+
+		ilist = ImageList.new
+		ilist.push(@base)
+		ilist.push(temp)
+		ilist.push(temp2)
+		date_img=ilist.flatten_images
 	end
 
 	def createDateLabelBg 

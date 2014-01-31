@@ -5,7 +5,7 @@ include Magick
 
 def test!
 	monthMaker = MonthMaker.new #NEED TO CHANGE ALL VARIABLES AS FUNCTION OF WIDTH
-	monthMaker.createMonth(6, 28, "FEBRUARY", 2014)
+	monthMaker.createMonth(6, 31, "MARCH", 2014)
 end
 
 #First one starts at 106,2440
@@ -27,7 +27,8 @@ class MonthMaker
 		:totalWidth,
 		:totalHeight,
 		:addHorizontalRule,
-		:addVerticalRule
+		:addVerticalRule,
+		:font
 	)
 
 
@@ -61,7 +62,9 @@ class MonthMaker
 		@weekNums = [week1Y, week2Y, week3Y, week4Y, week5Y]
 
 		@addHorizontalRule = true
-		@addVerticalRule = false
+		@addVerticalRule = true
+
+		@font = 'font/SourceSansPro-Bold.otf'
 
 		@imgList = ImageList.new
 	end
@@ -69,8 +72,8 @@ class MonthMaker
 	def createMonth(startDay, numDays, month, year)
 		addAllDates(startDay, numDays, month)
 
-		addDateBorders
 	 	addDayLabels
+		addDateBorders
 
 	 	final = @imgList.flatten_images
 	 	addMonthLabel(final, month, "2014")
@@ -78,10 +81,13 @@ class MonthMaker
 	end
 
 	def addMonthLabel(img, month, year)
-		psize = @totalHeight * 0.05555555555556
+		psize = @totalHeight * 0.03666666667
 		monthLbl = Draw.new
 		monthLbl.gravity = NorthEastGravity
 		monthLbl.pointsize = psize
+		monthLbl.interword_spacing = psize/2
+		monthLbl.kerning = -(psize*0.075)
+		monthLbl.font = @font
 		monthLbl.fill = 'black'
 		monthLbl.font_weight = BoldWeight
 
@@ -96,7 +102,7 @@ class MonthMaker
 		for i in(0..6)
 			weekDayLbl = weekDayMaker.createDayLabel(i)
 			weekDayLbl.page = Rectangle.new(weekDayLbl.columns, weekDayLbl.rows,
-							@weekDays[i], (@weekNums[0] - (weekDayLbl.rows + @dateDivider)))
+							@weekDays[i], (@weekNums[0] - (weekDayLbl.rows - (1.25*@dateDivider))))
 			@imgList.push(weekDayLbl)
 		end
 	end
@@ -120,8 +126,14 @@ class MonthMaker
 	end
 
 	def addDate(weekDay, weekNum, date)
-		dateImg = @dateCreator.createDate(date)
-		dateImg.page = createDatePos(weekDay, weekNum)
+		if(weekNum > 4)
+			dateImg = @dateCreator.createDoubleDate(date-7, date, @dateDivider*0.3)
+		else
+			dateImg = @dateCreator.createDate(date)
+		end
+		
+			dateImg.page = createDatePos(weekDay, weekNum)
+
 
 		@imgList.push(dateImg)
 	end
@@ -180,6 +192,7 @@ class MonthMaker
 	end
 
 	def createDatePos(weekDay, weekNum)
+		weekNum = 4 if (weekNum > 4)
 		return Rectangle.new(@dateWidth, @dateHeight, @weekDays[weekDay], @weekNums[weekNum])
 	end
 end
