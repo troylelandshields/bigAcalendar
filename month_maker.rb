@@ -3,13 +3,15 @@ require_relative 'date_maker.rb'
 require_relative 'weekday_maker.rb'
 include Magick
 
+$weekDayFont = "font/Helv/Helvetica-Bold.ttf"
+
 def test!
-	#monthMaker = MonthMaker.new #NEED TO CHANGE ALL VARIABLES AS FUNCTION OF WIDTH
-	#monthMaker.font = "font/HelveticaNeue/helvetica-neue1.ttf"
-	#monthMaker.weekDayMaker.font = "font/Helvetica.dfont"
-	#monthMaker.dateCreator.font = "font/HelveticaNeue/helvetica-neue-bold.ttf"
-	#monthMaker.createMonth(6, 28, "FEBRUARY", 2014).write("fonts_out/April.png")
-	createMonthWithFonts
+	monthMaker = MonthMaker.new #NEED TO CHANGE ALL VARIABLES AS FUNCTION OF WIDTH
+	monthMaker.font = $weekDayFont
+	monthMaker.weekDayMaker.font = $weekDayFont
+	monthMaker.dateCreator.font = $weekDayFont
+	monthMaker.createMonth(6, 31, "MARCH", 2014).write("fonts_out/helviticas/default.png")
+	#createMonthWithFonts
 end
 
 def createMonthWithFonts
@@ -17,7 +19,7 @@ def createMonthWithFonts
 	#monthMaker.createMonth(6, 31, "MARCH", 2014).write("fonts_out/Default.png")
 
 	fonts = {
-=begin
+=begin	
 		"SourceSansPro" => [
 			"font/SourceSansPro/SourceSansPro-Bold.otf", 
 			"font/SourceSansPro/SourceSansPro-Bold.otf",
@@ -73,6 +75,16 @@ def createMonthWithFonts
 			"font/liberation/LiberationSans-Bold.ttf", 
 			"font/liberation/LiberationSans-Bold.ttf", 
 		], 
+		"helvitica-HvCn" => [
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvCn.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvCn.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvCn.otf" 
+		],
+		"helvitica-HvEx" => [
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvEx.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvEx.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvEx.otf"
+		],
 		"helvitica-roman" => [
 			"font/HelveticaNeue/HelveticaNeueLTStd-55-roman.otf", 
 			"font/HelveticaNeue/HelveticaNeueLTStd-55-roman.otf", 
@@ -93,25 +105,25 @@ def createMonthWithFonts
 			"font/HelveticaNeue/HelveticaNeueLTPro-Hv.otf", 
 			"font/HelveticaNeue/HelveticaNeueLTPro-Hv.otf" 
 		],
-		"helvitica-HvCn" => [
-			"font/HelveticaNeue/HelveticaNeueLTPro-HvCn.otf", 
-			"font/HelveticaNeue/HelveticaNeueLTPro-HvCn.otf", 
-			"font/HelveticaNeue/HelveticaNeueLTPro-HvCn.otf" 
-		],
-		"helvitica-HvEx" => [
-			"font/HelveticaNeue/HelveticaNeueLTPro-HvEx.otf", 
-			"font/HelveticaNeue/HelveticaNeueLTPro-HvEx.otf", 
-			"font/HelveticaNeue/HelveticaNeueLTPro-HvEx.otf"
-		],
 =end
-		"helvitica-1" => [
+		"helvitica-3" => [
 			"font/HelveticaNeue/helvetica-neue1.ttf",
-			"font/HelveticaNeue/HelveticaNeueLTStd-BdCn.otf",  
+			"font/Helv/Helvetica.ttf",  
 			"font/HelveticaNeue/helvetica-neue-bold.ttf"
 		],
-		"helvitica-2" => [
+		"helvitica-4" => [
 			"font/HelveticaNeue/helvetica-neue1.ttf",
-			"font/HelveticaNeue/HelveticaNeueLTPro-BlkCn.otf",  
+			"font/Helv/Helvetica-Bold.ttf",   
+			"font/HelveticaNeue/helvetica-neue-bold.ttf"
+		],
+		"helvitica-5" => [
+			"font/HelveticaNeue/helvetica-neue1.ttf",
+			"font/Helv/Helvetica-Oblique.ttf",    
+			"font/HelveticaNeue/helvetica-neue-bold.ttf"
+		],
+		"helvitica-6" => [
+			"font/HelveticaNeue/helvetica-neue1.ttf",
+			"font/Helv/Helvetica-BoldOblique.ttf",    
 			"font/HelveticaNeue/helvetica-neue-bold.ttf"
 		]
 	}
@@ -120,13 +132,8 @@ def createMonthWithFonts
 		monthMaker = MonthMaker.new
 		puts "Calendar with #{font}..."
 		monthMaker.font = fonts[font][0]
-		monthMaker.weekDayMaker.font = fonts[font][1] 
+		monthMaker.weekDayMaker.font = $weekDayFont
 		monthMaker.dateCreator.font = fonts[font][2]
-
-		puts "Problem with month font #{monthMaker.font}" #if(monthMaker.font == nil) 
-		puts "Problem with weekday font #{monthMaker.weekDayMaker.font}" #if(monthMaker.weekDayMaker.font == nil) 
-		puts "Problem with date font #{monthMaker.dateCreator.font}" #if(monthMaker.dateCreator.font == nil) 
-
 		monthMaker.createMonth(6, 31, "MARCH", 2014).write("fonts_out/helviticas/#{font}.png")
 		puts "...finished."
 	}
@@ -163,7 +170,7 @@ class MonthMaker
 	def initialize
 		@dateList = nil
 
-		@totalWidth = 1500 #14850 IS DEFAULT
+		@totalWidth = 14850#1500 #14850 IS DEFAULT
 		@totalHeight = @totalWidth * 0.72727272727273
 
 		@dateDivider = @totalWidth * 0.0040404040404
@@ -233,7 +240,7 @@ class MonthMaker
 		for i in(0..6)
 			weekDayLbl = @weekDayMaker.createDayLabel(i)
 			weekDayLbl.page = Rectangle.new(weekDayLbl.columns, weekDayLbl.rows,
-							@weekDays[i], (@weekNums[0] - (weekDayLbl.rows - (4.10*@dateDivider))))
+							@weekDays[i], (@weekNums[0] - (weekDayLbl.rows + (1.5*@dateDivider))))
 			@imgList.push(weekDayLbl)
 		end
 	end

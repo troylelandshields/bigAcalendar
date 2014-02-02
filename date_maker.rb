@@ -57,20 +57,22 @@ class DateCreator
 		annotate.gravity = CenterGravity
 		annotate.font = @font unless @font == nil
 		annotate.pointsize = @lbl_size * 0.55#(@date_height * 0.09009009009)
-		annotate.kerning = -25 #Make this scale
+		annotate.kerning = -@lbl_size * 0.06 #Make this scale
 		annotate.fill = @date_color.to_s
 		return annotate
 	end
 
 	def createDate(date)
-		#return @dateCache[date] unless @dateCache[date] == nil
+		return @dateCache[date] unless @dateCache[date] == nil
 		createBaseImage if @base == nil
 		createDateLabelBg if @date_lbl_bg == nil
 		createDateLabelPos if @date_lbl_pos == nil
 		temp = @date_lbl_bg.copy
 
 		date_lbl = createDateAnnotation
-		date_lbl.annotate(temp, 0, 0, 1, 0, date.to_s)
+		metric = date_lbl.get_type_metrics(temp, date.to_s)
+
+		date_lbl.annotate(temp, 0, 0, metric.width*0.03, -metric.descent * 0.35, date.to_s)
 
 		temp.page = @date_lbl_pos
 
@@ -91,8 +93,12 @@ class DateCreator
 		temp2 = @date_lbl_bg.copy
 
 		date_lbl = createDateAnnotation
-		date_lbl.annotate(temp, 0, 0, 0, 0, date.to_s)
-		date_lbl.annotate(temp2, 0, 0, 0, 0, date2.to_s)
+
+		metric1 = date_lbl.get_type_metrics(temp, date.to_s)
+		metric2 = date_lbl.get_type_metrics(temp2, date2.to_s)
+
+		date_lbl.annotate(temp,0, 0, metric1.width*0.03, -metric1.descent * 0.35, date.to_s)
+		date_lbl.annotate(temp2, 0, 0, metric2.width*0.03, -metric2.descent * 0.35, date2.to_s)
 
 		x = 11
 		l = Draw.new

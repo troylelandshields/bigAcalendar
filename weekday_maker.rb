@@ -31,7 +31,7 @@ class WeekDayCreator
 
 	def setSize(width)
 		@lblWidth = width
-		@lblHeight = @lblWidth * 0.88235294117647
+		@lblHeight = @lblWidth #* 0.88235294117647
 	end
 
 	def createDayLabel(day)
@@ -43,9 +43,13 @@ class WeekDayCreator
 		dayLbl.pointsize = @lblHeight #+ (@lblHeight * (1.0/7.0))
 		dayLbl.fill = @weekLblColors[day]
 		dayLbl.font = @font unless @font == nil
-		dayLbl.font_style = ObliqueStyle
-		dayLbl.font_weight = BoldWeight
-		dayLbl.annotate(temp, 0, 0, 0, 0, @weekLabels[day])
+		#dayLbl.font_style = ObliqueStyle
+		#dayLbl.font_weight = BoldWeight
+
+		metrics = dayLbl.get_type_metrics(temp, @weekLabels[day])
+
+
+		dayLbl.annotate(temp, 0, 0, 0, -(0.9*metrics.descent), @weekLabels[day])
 
 		#temp.write("day.png") # We don't need to save this image 
 		return temp
