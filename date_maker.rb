@@ -39,7 +39,7 @@ class DateCreator
 		@date_lbl_bg = nil				#BG image for the date label
 		@date_lbl_pos = nil				#A rectangle to place the date
 		@base = nil
-		@font = 'font/SourceSansPro-Bold.otf'
+		#@font = 'font/SourceSansPro-Regular.otf'
 		@dateCache = []
 	end
 
@@ -53,7 +53,7 @@ class DateCreator
 	end
 
 	def createDate(date)
-		return @dateCache[date] unless @dateCache[date] == nil
+		#return @dateCache[date] unless @dateCache[date] == nil
 		createBaseImage if @base == nil
 		createDateLabelBg if @date_lbl_bg == nil
 		createDateLabelPos if @date_lbl_pos == nil
@@ -61,7 +61,7 @@ class DateCreator
 
 		date_lbl = Draw.new
 		date_lbl.gravity = CenterGravity
-		date_lbl.font = @font
+		date_lbl.font = @font unless @font == nil
 		date_lbl.pointsize = @lbl_size - (@date_height * 0.09009009009)
 		date_lbl.kerning = -3 #Make this scale
 		date_lbl.fill = @date_color.to_s
@@ -87,7 +87,7 @@ class DateCreator
 
 		date_lbl = Draw.new
 		date_lbl.gravity = CenterGravity
-		date_lbl.font = @font
+		date_lbl.font = @font unless @font == nil
 		date_lbl.pointsize = @lbl_size - (@date_height * 0.09009009009)
 		date_lbl.kerning = -3
 		date_lbl.fill = @date_color.to_s

@@ -5,7 +5,139 @@ include Magick
 
 def test!
 	monthMaker = MonthMaker.new #NEED TO CHANGE ALL VARIABLES AS FUNCTION OF WIDTH
-	monthMaker.createMonth(6, 31, "MARCH", 2014)
+	monthMaker.font = "font/HelveticaNeue/helvetica-neue1.ttf"
+	monthMaker.weekDayMaker.font = "font/HelveticaNeue/helvetica-neue-bold.ttf"
+	monthMaker.dateCreator.font = "font/HelveticaNeue/helvetica-neue1.ttf"
+	monthMaker.createMonth(2, 30, "APRIL", 2014).write("fonts_out/April.png")
+	#createMonthWithFonts
+end
+
+def createMonthWithFonts
+	monthMaker = MonthMaker.new
+	monthMaker.createMonth(6, 31, "MARCH", 2014).write("fonts_out/Default.png")
+
+	fonts = {
+=begin
+		"SourceSansPro" => [
+			"font/SourceSansPro/SourceSansPro-Bold.otf", 
+			"font/SourceSansPro/SourceSansPro-Bold.otf",
+			"font/SourceSansPro/SourceSansPro-Regular.otf"
+		],
+		"Aller" => [
+			"font/Aller/Aller_Bd.ttf", 
+			"font/Aller/AllerDisplay.ttf",
+			"font/Aller/Aller_Rg.ttf"
+		],
+		"Amble" => [
+			"font/Amble/Amble-Bold.ttf", 
+			"font/Amble/Amble-Bold.ttf", 
+			"font/Amble/Amble-Regular.ttf", 
+		],
+		"Cantarell" => [
+			"font/Cantarell/Cantarell-Bold.ttf", 
+			"font/Cantarell/Cantarell-Bold.ttf", 
+			"font/Cantarell/Cantarell-Bold.ttf", 
+		],
+		"exo" => [
+			"font/exo/Exo-Black.otf", 
+			"font/exo/Exo-Black.otf", 
+			"font/exo/Exo-SemiBold.otf", 
+		],
+		"fira-sans-mono" => [
+			"font/fira-sans/FiraMonoOT-Bold.otf", 
+			"font/fira-sans/FiraMonoOT-Bold.otf", 
+			"font/fira-sans/FiraMonoOT-Bold.otf", 
+		],
+		"fira-sans" => [
+			"font/fira-sans/FiraSansOT-Bold.otf", 
+			"font/fira-sans/FiraSansOT-Bold.otf", 
+			"font/fira-sans/FiraSansOT-Bold.otf", 
+		],
+		"Nobile" => [
+			"font/Nobile/Nobile-Bold.ttf", 
+			"font/Nobile/Nobile-Bold.ttf", 
+			"font/Nobile/Nobile-Bold.ttf", 
+		],
+		"Quicksand" => [
+			"font/Quicksand/Quicksand-Bold.otf", 
+			"font/Quicksand/Quicksand-Bold.otf", 
+			"font/Quicksand/Quicksand-Bold.otf", 
+		],
+		"Nova" => [
+			"font/nova/NOVASOLID.ttf", 
+			"font/nova/NOVASOLID.ttf", 
+			"font/nova/NOVASOLID.ttf", 
+		],
+		"liberation" => [
+			"font/liberation/LiberationSans-Bold.ttf", 
+			"font/liberation/LiberationSans-Bold.ttf", 
+			"font/liberation/LiberationSans-Bold.ttf", 
+		], 
+		"helvitica-roman" => [
+			"font/HelveticaNeue/HelveticaNeueLTStd-55-roman.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTStd-55-roman.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTStd-55-roman.otf"
+		],
+		"helvitica-LtEx" => [
+			"font/HelveticaNeue/HelveticaNeueLTPro-LtEx.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-LtEx.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-LtEx.otf"
+		],
+		"helvitica-Lt" => [
+			"font/HelveticaNeue/HelveticaNeueLTPro-Lt.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-Lt.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-Lt.otf" 
+		],
+		"helvitica-Hv" => [
+			"font/HelveticaNeue/HelveticaNeueLTPro-Hv.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-Hv.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-Hv.otf" 
+		],
+		"helvitica-HvCn" => [
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvCn.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvCn.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvCn.otf" 
+		],
+		"helvitica-HvEx" => [
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvEx.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvEx.otf", 
+			"font/HelveticaNeue/HelveticaNeueLTPro-HvEx.otf"
+		],
+=end
+		"helvitica-neue-bold" => [
+			"font/HelveticaNeue/helvetica-neue-bold.ttf", 
+			"font/HelveticaNeue/helvetica-neue-bold.ttf", 
+			"font/HelveticaNeue/helvetica-neue-bold.ttf"
+		],
+		"helvitica-neue1" => [
+			"font/HelveticaNeue/helvetica-neue1.ttf", 
+			"font/HelveticaNeue/helvetica-neue1.ttf", 
+			"font/HelveticaNeue/helvetica-neue1.ttf"
+		],
+		"helvitica-bold-and-1" => [
+			"font/HelveticaNeue/helvetica-neue1.ttf", 
+			"font/HelveticaNeue/helvetica-neue-bold.ttf",  
+			"font/HelveticaNeue/helvetica-neue1.ttf"
+		]
+	}
+
+	fonts.keys.each {|font|
+		monthMaker = MonthMaker.new
+		puts "Calendar with #{font}..."
+		monthMaker.font = fonts[font][0]
+		monthMaker.weekDayMaker.font = fonts[font][1] 
+		monthMaker.dateCreator.font = fonts[font][2]
+
+		puts "Problem with month font #{monthMaker.font}" #if(monthMaker.font == nil) 
+		puts "Problem with weekday font #{monthMaker.weekDayMaker.font}" #if(monthMaker.weekDayMaker.font == nil) 
+		puts "Problem with date font #{monthMaker.dateCreator.font}" #if(monthMaker.dateCreator.font == nil) 
+
+		monthMaker.createMonth(6, 31, "MARCH", 2014).write("fonts_out/helviticas/#{font}.png")
+		puts "...finished."
+	}
+
+
+
 end
 
 #First one starts at 106,2440
@@ -20,6 +152,7 @@ class MonthMaker
 		:weekDays,
 		:weekNums,
 		:dateCreator,
+		:weekDayMaker,
 		:bg_color,
 		:monthDays,
 		:monthNames,
@@ -35,7 +168,7 @@ class MonthMaker
 	def initialize
 		@dateList = nil
 
-		@totalWidth = 1500 #14850 IS DEFAULT
+		@totalWidth = 14850 # 1500 #14850 IS DEFAULT
 		@totalHeight = @totalWidth * 0.72727272727273
 
 		@dateDivider = @totalWidth * 0.0040404040404
@@ -64,12 +197,15 @@ class MonthMaker
 		@addHorizontalRule = true
 		@addVerticalRule = true
 
-		@font = 'font/SourceSansPro-Bold.otf'
-
+		#@font = 'font/SourceSansPro-Bold.otf'
+		@dateCreator = DateCreator.new
+		@weekDayMaker = WeekDayCreator.new
 		@imgList = ImageList.new
 	end
 
 	def createMonth(startDay, numDays, month, year)
+
+
 		addAllDates(startDay, numDays, month)
 
 	 	addDayLabels
@@ -77,7 +213,8 @@ class MonthMaker
 
 	 	final = @imgList.flatten_images
 	 	addMonthLabel(final, month, "2014")
-	 	final.write("#{month}.png")
+	 	return final
+	 	#final.write("#{month}.png")
 	end
 
 	def addMonthLabel(img, month, year)
@@ -87,7 +224,7 @@ class MonthMaker
 		monthLbl.pointsize = psize
 		monthLbl.interword_spacing = psize/2
 		monthLbl.kerning = -(psize*0.075)
-		monthLbl.font = @font
+		monthLbl.font = @font unless @font == nil
 		monthLbl.fill = 'black'
 		monthLbl.font_weight = BoldWeight
 
@@ -95,12 +232,11 @@ class MonthMaker
 	end
 
 	def addDayLabels
-		weekDayMaker = WeekDayCreator.new
-		weekDayMaker.setSize(@dateWidth)
-		#weekDayMaker.lblHeight = @imgList[0].rows * 0.16666666
+		@weekDayMaker.setSize(@dateWidth)
+		#@weekDayMaker.lblHeight = @imgList[0].rows * 0.16666666
 
 		for i in(0..6)
-			weekDayLbl = weekDayMaker.createDayLabel(i)
+			weekDayLbl = @weekDayMaker.createDayLabel(i)
 			weekDayLbl.page = Rectangle.new(weekDayLbl.columns, weekDayLbl.rows,
 							@weekDays[i], (@weekNums[0] - (weekDayLbl.rows - (1.25*@dateDivider))))
 			@imgList.push(weekDayLbl)
@@ -108,7 +244,6 @@ class MonthMaker
 	end
 
 	def addAllDates(startDay, numDays, month)
-		@dateCreator = DateCreator.new
 		@dateCreator.setSize(@dateWidth)
 
 	 	@imgList.push(createBaseImage)
