@@ -32,7 +32,7 @@ class DateCreator
 		@date_width = 2040				#Width of date box; Default = 2040
 		@date_height = 1443				#Default = 1443
 		@lbl_size = 200					#Size of date Default = 350
-		@date_position = -50				#Position of date from upper-left corner Default = 80
+		@date_position = 80				#Position of date from upper-left corner Default = 80
 		@date_color = 'white'	
 		@bg_color = 'white'
 		@date_lbl_bg_color = 'black'	#Height of date box
@@ -46,10 +46,20 @@ class DateCreator
 	def setSize(width)
 		@date_width = width
 		@date_height = @date_width * 0.70735294117647
-		@lbl_size = @date_height * 0.2772002772
-		@date_position = @date_width * 0.03921568627451
+		@lbl_size = @date_height * 0.25#0.2772002772
+		@date_position = @date_width * 0.05921568627451
 		@black_stroke = @date_width * 0.01078431372549
 		@white_stroke = @date_width * 0.00588235294118
+	end
+
+	def createDateAnnotation
+		annotate = Draw.new
+		annotate.gravity = CenterGravity
+		annotate.font = @font unless @font == nil
+		annotate.pointsize = @lbl_size * 0.55#(@date_height * 0.09009009009)
+		annotate.kerning = -25 #Make this scale
+		annotate.fill = @date_color.to_s
+		return annotate
 	end
 
 	def createDate(date)
@@ -59,12 +69,7 @@ class DateCreator
 		createDateLabelPos if @date_lbl_pos == nil
 		temp = @date_lbl_bg.copy
 
-		date_lbl = Draw.new
-		date_lbl.gravity = CenterGravity
-		date_lbl.font = @font unless @font == nil
-		date_lbl.pointsize = @lbl_size - (@date_height * 0.09009009009)
-		date_lbl.kerning = -3 #Make this scale
-		date_lbl.fill = @date_color.to_s
+		date_lbl = createDateAnnotation
 		date_lbl.annotate(temp, 0, 0, 1, 0, date.to_s)
 
 		temp.page = @date_lbl_pos
@@ -85,12 +90,7 @@ class DateCreator
 		temp = @date_lbl_bg.copy
 		temp2 = @date_lbl_bg.copy
 
-		date_lbl = Draw.new
-		date_lbl.gravity = CenterGravity
-		date_lbl.font = @font unless @font == nil
-		date_lbl.pointsize = @lbl_size - (@date_height * 0.09009009009)
-		date_lbl.kerning = -3
-		date_lbl.fill = @date_color.to_s
+		date_lbl = createDateAnnotation
 		date_lbl.annotate(temp, 0, 0, 0, 0, date.to_s)
 		date_lbl.annotate(temp2, 0, 0, 0, 0, date2.to_s)
 

@@ -40,9 +40,10 @@ class WeekDayCreator
 
 		dayLbl = Draw.new
 		dayLbl.gravity = CenterGravity #Maybe change this
-		dayLbl.pointsize = @lblHeight + (@lblHeight * (1.0/7.0))
+		dayLbl.pointsize = @lblHeight #+ (@lblHeight * (1.0/7.0))
 		dayLbl.fill = @weekLblColors[day]
 		dayLbl.font = @font unless @font == nil
+		dayLbl.font_style = ObliqueStyle
 		dayLbl.font_weight = BoldWeight
 		dayLbl.annotate(temp, 0, 0, 0, 0, @weekLabels[day])
 
