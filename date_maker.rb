@@ -47,7 +47,7 @@ class DateCreator
 		@date_width = width
 		@date_height = @date_width * 0.70735294117647
 		@lbl_size = @date_height * 0.25#0.2772002772
-		@date_position = @date_width * 0.05921568627451
+		@date_position = @date_width * 0.08 #0.05921568627451
 		@black_stroke = @date_width * 0.01078431372549
 		@white_stroke = @date_width * 0.00588235294118
 	end

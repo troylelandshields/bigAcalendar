@@ -163,7 +163,8 @@ class MonthMaker
 		:totalHeight,
 		:addHorizontalRule,
 		:addVerticalRule,
-		:font
+		:font,
+		:baseImage
 	)
 
 
@@ -203,11 +204,13 @@ class MonthMaker
 		@dateCreator = DateCreator.new
 		@weekDayMaker = WeekDayCreator.new
 		@imgList = ImageList.new
+
+		font = $weekDayFont
+		weekDayMaker.font = $weekDayFont
+		dateCreator.font = $weekDayFont
 	end
 
 	def createMonth(startDay, numDays, month, year)
-
-
 		addAllDates(startDay, numDays, month)
 
 	 	addDayLabels
@@ -215,8 +218,12 @@ class MonthMaker
 
 	 	final = @imgList.flatten_images
 	 	addMonthLabel(final, month, "2014")
-	 	return final
-	 	#final.write("#{month}.png")
+
+	 	addNotesLabel(final)
+
+	 	#return final
+	 	final.write("year_out/#{month}.png")
+	 	@imgList = ImageList.new
 	end
 
 	def addMonthLabel(img, month, year)
@@ -233,6 +240,22 @@ class MonthMaker
 		monthLbl.annotate(img, 0, 0, @dateWidth/3, psize/4, "#{month} #{year}")
 	end
 
+	def addNotesLabel(img)
+		psize = @totalHeight * 0.03666666667 * 0.7
+
+		notes = Draw.new
+		notes.gravity = NorthWestGravity
+		notes.pointsize = psize
+		notes.kerning = -(psize*0.075)
+		notes.font = @font unless @font == nil
+		notes.fill = 'black'
+		notes.font_weight = BoldWeight
+
+		notes.annotate(img, 0, 0, 300, 10100, 'NOTES:')
+
+		
+	end
+
 	def addDayLabels
 		@weekDayMaker.setSize(@dateWidth)
 		#@weekDayMaker.lblHeight = @imgList[0].rows * 0.16666666
@@ -240,7 +263,7 @@ class MonthMaker
 		for i in(0..6)
 			weekDayLbl = @weekDayMaker.createDayLabel(i)
 			weekDayLbl.page = Rectangle.new(weekDayLbl.columns, weekDayLbl.rows,
-							@weekDays[i], (@weekNums[0] - (weekDayLbl.rows + (1.5*@dateDivider))))
+							@weekDays[i], (@weekNums[0] - (weekDayLbl.rows + (@dateDivider))))
 			@imgList.push(weekDayLbl)
 		end
 	end
@@ -325,7 +348,8 @@ class MonthMaker
 
 	def createBaseImage
 		bg_color = @bg_color
-		return Image.new(@totalWidth, @totalHeight){self.background_color = bg_color}
+		@baseImage = Image.new(@totalWidth, @totalHeight){self.background_color = bg_color} if @baseImage == nil
+		return @baseImage
 	end
 
 	def createDatePos(weekDay, weekNum)
