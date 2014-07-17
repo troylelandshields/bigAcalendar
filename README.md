@@ -20,3 +20,6 @@ gem install rmagick
 It should then work fine, but if you get an error about annotate not having the necessary font, run:
 
 brew install ghostscript
+
+
+![Example calendar](http://yeticalendar.com/store/img/JANUARY.png "January 2014")
